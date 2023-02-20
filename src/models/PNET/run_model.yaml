@@ -1,0 +1,141 @@
+# Seed needs to be set at top of yaml, before objects with parameters are made
+seed: 1986
+__set_seed: !!python/object/apply:torch.manual_seed [!ref <seed>]
+noise_snr: 0
+
+dataset: PMSing
+da_dataset: DM2DM  # can be vice versa by changing 'pretrain_domain'
+ssinger: DM
+tsinger: DM
+pretrain_domain: DM
+model_class: PNET
+
+experiment_id: !ref pretrain_on_<pretrain_domain>
+output_dir: !ref ./results/<model_class>/<experiment_id>
+save_folder: !ref <output_dir>/save
+train_log: !ref <output_dir>/train_log.txt
+
+# Data files
+n_phonation: 4  # 3 + 1 rest
+
+prepare:
+    source_dataset_dir: !ref ../data/PMSetAudio/utterance_lvl/<dataset>/<ssinger>/
+    target_dataset_dir: !ref ../data/PMSetAudio/utterance_lvl/<dataset>/<tsinger>/
+    train_json_path: !ref ./datasets/<dataset>/<da_dataset>/train.json
+    valid_json_path: !ref ./datasets/<dataset>/<da_dataset>/valid.json
+    test_json_path: !ref ./datasets/<dataset>/<da_dataset>/test.json
+    shuffle_data: True
+    computed_dataset_dir: !ref ./datasets/<dataset>/<da_dataset>/computed_dataset/
+    N_data: 512  # 256 1024
+
+# Feature parameters
+sample_rate: 48000
+win_length: 25
+hop_length: 10  # ms
+n_fft: 2048
+n_mels: 128
+blank_index: 'rest'
+
+
+compute_features: !new:speechbrain.lobes.features.Fbank
+    deltas: True
+    sample_rate: !ref <sample_rate>
+    win_length: !ref <win_length>
+    hop_length: !ref <hop_length>
+    n_fft: !ref <n_fft>
+    n_mels: !ref <n_mels>
+
+# Added noise and reverb come from OpenRIR dataset, automatically
+# downloaded and prepared with this Environmental Corruption class.
+env_corrupt: !new:speechbrain.lobes.augment.EnvCorrupt
+    openrir_folder: ../data/openrir
+    babble_prob: 0.0
+    reverb_prob: 0.0
+    noise_prob: 0.0
+    noise_snr_low: !ref <noise_snr>
+    noise_snr_high: !ref <noise_snr>
+    rir_scale_factor: 1
+
+
+# The train logger writes training statistics to a file, as well as stdout.
+train_logger: !new:speechbrain.utils.train_logger.FileTrainLogger
+    save_file: !ref <train_log>
+
+error_stats: !name:speechbrain.utils.metric_stats.MetricStats
+    metric: !name:speechbrain.nnet.losses.classification_error
+        reduction: batch
+
+## Training Model Parameters
+batch_size: 16
+n_epochs: 50
+lr: 1.0e-4
+ckpt_interval_minutes: 15 # save checkpoint every N min
+
+# dataset and dataloader options
+sorting: None  # ascending # choose between ascending, descending and random
+train_dataloader_opts:
+    batch_size: !ref <batch_size>
+    shuffle: False
+valid_dataloader_opts:
+    batch_size: !ref <batch_size>
+test_dataloader_opts:
+    batch_size: !ref <batch_size>
+
+
+epoch_counter: !new:speechbrain.utils.epoch_loop.EpochCounter
+    limit: !ref <n_epochs>
+
+checkpointer: !new:speechbrain.utils.checkpoints.Checkpointer
+    checkpoints_dir: !ref <output_dir>/checkpoints
+    recoverables:
+        normalizer: !ref <normalizer>
+        C2F_Encoder: !ref <C2F_Encoder>
+        C2F_Classifier: !ref <C2F_Classifier>
+        epoch_counter: !ref <epoch_counter>
+        scheduler: !ref <lr_annealing>
+savept_path: !ref <output_dir>/checkpoints_pt/
+
+normalizer: !new:speechbrain.processing.features.InputNormalization
+    norm_type: global
+
+optimizer: !name:torch.optim.Adam
+    lr: !ref <lr>
+
+lr_annealing: !new:speechbrain.nnet.schedulers.NewBobScheduler
+    initial_value: !ref <lr>
+    improvement_threshold: 0.0025
+    annealing_factor: 0.8
+    patient: 0
+
+
+# Model parameters--------------------------------------------
+
+ensem_weights: [1, 1, 1, 1, 0]
+C2F_Encoder: !new:modules.C2F_block.C2F_Encoder
+    n_channels: 384
+C2F_Classifier: !new:modules.C2F_block.C2F_Classifier
+    n_classes: !ref <n_phonation>
+
+modules:
+    normalizer: !ref <normalizer>
+    C2F_Encoder: !ref <C2F_Encoder>
+    C2F_Classifier: !ref <C2F_Classifier>
+
+# ---------------------------------------------------------------
+# evaluation metrics
+metric_keys:
+    - phlvl.ACC_class
+    - phlvl.PRE_class
+    - phlvl.REC_class
+    - phlvl.F1_class
+    - phlvl.ACC_instance
+    - phlvl.PRE_instance
+    - phlvl.REC_instance
+    - phlvl.F1_instance
+    - phlvl.ER
+    - phlvl.F1_breathy_class
+    - phlvl.F1_neutral_class
+    - phlvl.F1_pressed_class
+
+max_key: phlvl.F1_class
+min_key: None

@@ -4,7 +4,6 @@ import speechbrain as sb
 from hyperpyyaml import load_hyperpyyaml
 import importlib
 from utils.data_io_da import prepare_datasets
-import os
 
 # Recipe begins!
 if __name__ == "__main__":
