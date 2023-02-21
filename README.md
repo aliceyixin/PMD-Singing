@@ -15,7 +15,8 @@ Phonation modes play a vital role in voice quality evaluation and vocal health d
 ## Prerequisites
 Install Anaconda and create the environment with python 3.8.13, pytorch 1.11.0 and cuda 11.3:
 ```
-conda create -n  <your-env> python=3.8.13
+conda create -n pmd python=3.8.13
+conda activate pmd
 pip install torch==1.11.0+cu113 torchaudio==0.11.0 -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
