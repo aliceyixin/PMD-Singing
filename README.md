@@ -1,12 +1,14 @@
 # PMD-Singing: Phonation Mode Detection in Singing
 This is the author's official PyTorch implementation for PMD-Singing. This repo contains code for experiments in the **ICASSP 2023** paper:
 
-[Phonation Mode Detection in Singing: a Singer Adapted Model]()
+[Phonation Mode Detection in Singing: a Singer Adapted Model](https://ieeexplore.ieee.org/document/10095669)
+
 
 ## Project Overview
 <p align="center">
 <img src="figs/overview-PMD-Singing.png" alt="" data-canonical-src="figs/overview-PMD-Singing.png" width="80%"/>
 </p>
+
 
 ## Abstract
 
@@ -57,5 +59,13 @@ python train_da.py models/APNet/run_model.yaml
 ## Citation
 If you use PMD-Singing or this codebase in your own work, please cite our paper:
 ```BibTex
-(To be added)
+@INPROCEEDINGS{yixin2023phonation,
+  author={Wang, Yixin and Wei, Wei and Wang, Ye},
+  booktitle={ICASSP 2023 - 2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)}, 
+  title={Phonation Mode Detection in Singing: A Singer Adapted Model}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={1-5},
+  doi={10.1109/ICASSP49357.2023.10095669}}
 ```
