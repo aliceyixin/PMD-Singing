@@ -28,7 +28,7 @@ pip install speechbrain
 ```
 
 ## Singing Voice Dataset for Phonation Mode Detection
-The Sung Phonation Mode Dataset (noted as PMSing in paper) is the first multi-phonation audio dataset for PMD task. The dataset is released here:([https://doi.org/10.5281/zenodo.7657058](https://doi.org/10.5281/zenodo.7657058)).
+The Sung Phonation Mode Dataset (noted as PMSing in paper) is the first multi-phonation audio dataset for PMD task. The dataset is released here: ([https://doi.org/10.5281/zenodo.7657058](https://doi.org/10.5281/zenodo.7657058)).
 
 The total duration of PMSing is 1.51 h, containing 42 songs with an average duration of 2.16 min. Compared to existing PMC datasets, the PMSing dataset contains a longer duration, and the duration of the phonation modes varies from 0.01 to 6.89 s. Additionally, all the audio files in PMSing contain multiple phonation modes.
 
