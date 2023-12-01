@@ -42,6 +42,7 @@ Please the dataset should be organized as:
                 ├── ....
    
 ```
+We welcome your attention on our work. If you want to get access to the full dataset, please read the Terms and Conditions of this dataset. If you agree all the terms, please send the signed Ts and Cs document to Prof. Ye Wang at wangye@comp.nus.edu.sg and CC Yixin Wang at yxwang@sei.xjtu.edu.cn.
 
 ## Usage
 We follow the training and evaluation logic of SpeechBrain. Please refer to [SpeechBrain tutorials](https://speechbrain.github.io/).
