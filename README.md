@@ -28,7 +28,7 @@ pip install speechbrain
 ```
 
 ## Singing Voice Dataset for Phonation Mode Detection
-The Sung Phonation Mode Dataset (noted as PMSing in paper) is the first multi-phonation audio dataset for PMD task. The dataset is released here:(To be added).
+The Sung Phonation Mode Dataset (noted as PMSing in paper) is the first multi-phonation audio dataset for PMD task. The dataset is released here:([https://doi.org/10.5281/zenodo.7657058](https://doi.org/10.5281/zenodo.7657058)).
 
 The total duration of PMSing is 1.51 h, containing 42 songs with an average duration of 2.16 min. Compared to existing PMC datasets, the PMSing dataset contains a longer duration, and the duration of the phonation modes varies from 0.01 to 6.89 s. Additionally, all the audio files in PMSing contain multiple phonation modes.
 
@@ -59,7 +59,7 @@ python train_da.py models/APNet/run_model.yaml
 ## Citation
 If you use PMD-Singing or this codebase in your own work, please cite our paper:
 ```BibTex
-@INPROCEEDINGS{yixin2023phonation,
+@INPROCEEDINGS{yixin2023singing,
   author={Wang, Yixin and Wei, Wei and Wang, Ye},
   booktitle={ICASSP 2023 - 2023 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)}, 
   title={Phonation Mode Detection in Singing: A Singer Adapted Model}, 
@@ -68,4 +68,14 @@ If you use PMD-Singing or this codebase in your own work, please cite our paper:
   number={},
   pages={1-5},
   doi={10.1109/ICASSP49357.2023.10095669}}
+
+@ARTICLE{yixin2023singingspeech,
+  author={Wang, Yixin and Wei, Wei and Gu, Xiangming and Guan, Xiaohong and Wang, Ye},
+  journal={IEEE/ACM Transactions on Audio, Speech, and Language Processing}, 
+  title={Disentangled Adversarial Domain Adaptation for Phonation Mode Detection in Singing and Speech}, 
+  year={2023},
+  volume={31},
+  number={},
+  pages={3746-3759},
+  doi={10.1109/TASLP.2023.3317568}}
 ```
